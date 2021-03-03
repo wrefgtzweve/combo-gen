@@ -51,13 +51,13 @@ def USER():
 
 
 def PASS():
-    rand = random.randint(0, 100)
+    rand = random.randint(1, 4)
     name = randomName(False)
-    if rand < 25:
+    if rand == 1:
         return "".join(random.sample(email, random.randint(5, 15)))
-    if rand < 50:
+    if rand == 2:
         return name + "".join(random.sample(digits, random.randint(2, 7)))
-    if rand < 75:
+    if rand == 3:
         str = ""
         if random.randint(1, 2) == 1:
             name.lower()
