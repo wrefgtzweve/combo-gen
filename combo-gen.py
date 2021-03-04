@@ -1,7 +1,6 @@
 import random
 import string
 import json
-import names
 import time
 
 print("How many lines should be generated:")
@@ -17,6 +16,14 @@ with open("emaildomains.json", "r") as domainfile:
     data = domainfile.read()
 emaildomains = json.loads(data)
 
+with open("firstnames.json", "r") as firstnamefile:
+    data = firstnamefile.read()
+firstnames = json.loads(data)
+
+with open("lastnames.json", "r") as lastnamefile:
+    data = lastnamefile.read()
+lastnames = json.loads(data)
+
 with open("passwords.json", "r") as passfile:
     data = passfile.read()
 passwords = json.loads(data)
@@ -27,11 +34,11 @@ combofile = open("generatedcredentials.txt", "a")
 def randomName(lower):
     x = random.randint(1, 3)
     if x == 1:
-        name = names.get_last_name()
+        name = random.choice(firstnames)
     if x == 2:
-        name = names.get_first_name()
+        name = random.choice(lastnames)
     if x == 3:
-        name = names.get_full_name()
+        name = random.choice(firstnames) + random.choice(lastnames)
     if lower == True:
         name.lower()
     return name.replace(" ", "")
