@@ -2,69 +2,99 @@ import random
 import string
 import json
 import time
+from faker import Faker
 
-print("How many lines should be generated:")
+fake = Faker()
+
+print("How many lines do you want to generate?:")
 linestogenerate = input()
 time1 = time.perf_counter()
 
 lowercase = string.ascii_lowercase
 digits = string.digits
 password = string.ascii_letters + string.digits + "_" + "." + "_" + "."
-email = string.ascii_letters + string.digits + "!" + "." + "_"
+email = string.ascii_letters
+emailadditive = ["_", "."]
 
-with open("emaildomains.json", "r") as domainfile:
+with open("data/emaildomains.json", "r") as domainfile:
     data = domainfile.read()
 emaildomains = json.loads(data)
 
-with open("firstnames.json", "r") as firstnamefile:
+with open("data/firstnames.json", "r") as firstnamefile:
     data = firstnamefile.read()
 firstnames = json.loads(data)
 
-with open("lastnames.json", "r") as lastnamefile:
+with open("data/lastnames.json", "r") as lastnamefile:
     data = lastnamefile.read()
 lastnames = json.loads(data)
 
-with open("passwords.json", "r") as passfile:
+with open("data/passwords.json", "r") as passfile:
     data = passfile.read()
 passwords = json.loads(data)
+
+with open("data/usernames.json", "r") as usernamefile:
+    data = usernamefile.read()
+usernames = json.loads(data)
 
 combofile = open("generatedcredentials.txt", "a")
 
 
 def randomName(lower):
-    x = random.randint(1, 3)
+    x = random.randint(1, 4)
     if x == 1:
         name = random.choice(firstnames)
-    if x == 2:
+    elif x == 2:
         name = random.choice(lastnames)
-    if x == 3:
+    elif x == 3:
         name = random.choice(firstnames) + random.choice(lastnames)
+    elif x == 4:
+        name = fake.name()
     if lower == True:
         name.lower()
     return name.replace(" ", "")
 
 
 def USER():
-    tempuser = randomName(True)
+    rand = random.randint(1, 3)
+    if rand == 1:
+        tempuser = randomName(True)
+    elif rand == 2:
+        return fake.email()
+    else:
+        tempuser = random.choice(usernames)
+
     username = ""
     first = True
+    additive = False
+
     for l in tempuser:
-        if random.randint(1, 5) == 1 and first == False:
-            username = username + random.choice(email)
+        int = random.randint(1, 50)
+        if first == True:
+            rand = random.randint(1, 20)
+            if rand == 1:
+                username = l.upper()
+            else:
+                username = l
+            first = False
         else:
-            username = username + l
-        first = False
-    return username.lower() + "@" + random.choice(emaildomains)
+            if int <= 2:
+                username = username + random.choice(email)
+            elif int >= 48 and additive == False:
+                username = username + random.choice(emailadditive) + l
+                additive = True
+            else:
+                username = username + l
+    return username + "@" + random.choice(emaildomains)
 
 
 def PASS():
-    rand = random.randint(1, 4)
+    rand = random.randint(1, 6)
     name = randomName(False)
     if rand == 1:
-        return "".join(random.sample(email, random.randint(5, 15)))
-    if rand == 2:
+        return "".join(random.sample(email, random.randint(6, 15)))
+    elif rand == 2:
         return name + "".join(random.sample(digits, random.randint(2, 7)))
-    if rand == 3:
+    elif rand == 3:
         str = ""
         if random.randint(1, 2) == 1:
             name.lower()
