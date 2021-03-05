@@ -3,6 +3,7 @@ import string
 import json
 import time
 from faker import Faker
+from progressbar import progressbar
 
 fake = Faker()
 
@@ -16,27 +17,27 @@ password = string.ascii_letters + string.digits + "_" + "." + "_" + "."
 email = string.ascii_letters
 emailadditive = ["_", "."]
 
-with open("data/emaildomains.json", "r") as domainfile:
+with open("data/emaildomains.json", "r", encoding="utf-8") as domainfile:
     data = domainfile.read()
 emaildomains = json.loads(data)
 
-with open("data/firstnames.json", "r") as firstnamefile:
+with open("data/firstnames.json", "r", encoding="utf-8") as firstnamefile:
     data = firstnamefile.read()
 firstnames = json.loads(data)
 
-with open("data/lastnames.json", "r") as lastnamefile:
+with open("data/lastnames.json", "r", encoding="utf-8") as lastnamefile:
     data = lastnamefile.read()
 lastnames = json.loads(data)
 
-with open("data/passwords.json", "r") as passfile:
+with open("data/passwords.json", "r", encoding="utf-8") as passfile:
     data = passfile.read()
 passwords = json.loads(data)
 
-with open("data/usernames.json", "r") as usernamefile:
+with open("data/usernames.json", "r", encoding="utf-8") as usernamefile:
     data = usernamefile.read()
 usernames = json.loads(data)
 
-combofile = open("generatedcredentials.txt", "a")
+combofile = open("generatedcredentials.txt", "a", encoding="utf-8")
 
 
 def randomName(lower):
@@ -111,7 +112,7 @@ def COMBO():
     return USER() + ":" + PASS()
 
 
-for i in range(int(linestogenerate)):
+for i in progressbar(range(int(linestogenerate))):
     combofile.write(COMBO() + "\n")
 
 
