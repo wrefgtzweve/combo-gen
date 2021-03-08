@@ -2,6 +2,7 @@ import random
 import string
 import json
 import time
+import datetime
 from faker import Faker
 from progressbar import progressbar
 
@@ -37,7 +38,13 @@ with open("data/usernames.json", "r", encoding="utf-8") as usernamefile:
     data = usernamefile.read()
 usernames = json.loads(data)
 
-combofile = open("generatedcredentials.txt", "a", encoding="utf-8")
+combofile = open(
+    "generatedcredentials"
+    + datetime.datetime.now().strftime("%m-%d-%Y-%H-%M-%S")
+    + ".txt",
+    "a",
+    encoding="utf-8",
+)
 
 
 def randomName(lower):
