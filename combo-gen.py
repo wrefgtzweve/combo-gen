@@ -3,13 +3,16 @@ import string
 import json
 import time
 import datetime
+import sys
 from faker import Faker
-from progressbar import progressbar
 
 fake = Faker()
 
-print("How many lines do you want to generate?:")
-linestogenerate = input()
+linestogenerate = sys.argv.pop() if len(sys.argv) > 1 else ""
+if linestogenerate == "":
+    print("No amount of lines to generate specified, defaulting to 50000")
+    linestogenerate = 50000
+
 time1 = time.perf_counter()
 
 lowercase = string.ascii_lowercase
@@ -57,7 +60,7 @@ def randomName(lower):
         name = random.choice(firstnames) + random.choice(lastnames)
     elif x == 4:
         name = fake.name()
-    if lower == True:
+    if lower:
         name.lower()
     return name.replace(" ", "")
 
@@ -75,23 +78,23 @@ def USER():
     first = True
     additive = False
 
-    for l in tempuser:
+    for letter in tempuser:
         int = random.randint(1, 50)
-        if first == True:
+        if first:
             rand = random.randint(1, 20)
             if rand == 1:
-                username = l.upper()
+                username = letter.upper()
             else:
-                username = l
+                username = letter
             first = False
         else:
             if int <= 2:
                 username = username + random.choice(email)
-            elif int >= 48 and additive == False:
-                username = username + random.choice(emailadditive) + l
+            elif int >= 48 and not additive:
+                username = username + random.choice(emailadditive) + letter
                 additive = True
             else:
-                username = username + l
+                username = username + letter
     return username + "@" + random.choice(emaildomains)
 
 
@@ -106,22 +109,22 @@ def PASS():
         str = ""
         if random.randint(1, 2) == 1:
             name.lower()
-        for l in name:
+        for letter in name:
             if random.randint(1, 2) == 1:
                 str = str + random.choice(password)
             else:
-                str = str + l
+                str = str + letter
         return str
     return random.choice(passwords)
 
 
 def COMBO():
-    return USER() + ":" + PASS()
+    line = USER() + ":" + PASS()
+    combofile.write(line + "\n")
 
 
-for i in progressbar(range(int(linestogenerate))):
-    combofile.write(COMBO() + "\n")
-
+for i in range(int(linestogenerate)):
+    COMBO()
 
 time2 = time.perf_counter()
-print(linestogenerate + " lines generated in " + str(time2 - time1) + " seconds.")
+print(str(linestogenerate) + " lines generated in " + str(round((time2 - time1), 3)) + " seconds.")
