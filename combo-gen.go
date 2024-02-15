@@ -196,5 +196,5 @@ func main() {
 	wg.Wait()
 
 	fmt.Println("Combos generated successfully")
-	fmt.Println("Time taken: ", time.Since(starTime).Seconds(), " seconds")
+	fmt.Printf("Time taken: %.2f seconds", time.Since(starTime).Seconds())
 }

@@ -7,6 +7,15 @@ Combo gen is a tool written in Go for generating realistic fake email/password c
 - Fast and efficient combo generation.
 - Realistic email formats and password structures.
 
+## 📖 Usage
+
+```bash
+>.\combo-gen.exe 1000000
+Count provided:  1000000
+Combos generated successfully
+Time taken:  7.1742545  seconds
+```
+
 ## 📥 Installation
 
 TODO
