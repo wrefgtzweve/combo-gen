@@ -1,0 +1,45 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          path: "src"
+
+
+      - name: "Install go"
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: "Cd to src"
+        run: cd src
+          
+      - name: "Build"
+        run: go build -o combo-gen.exe
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: combo-gen
+          path: src/combo-gen.exe
+      
+      - name: "Make Release"
+        uses: softprops/action-gh-release@v1
+        with:
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            src/combo-gen.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    
